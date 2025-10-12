@@ -82,7 +82,7 @@ function Mockup() {
             rotationScreen.kill();
         };
 
-        }, 100);
+        }, 300);
     }, [laptopRef.current?.laptop, laptopRef.current?.screen]);
 
     
