@@ -276,7 +276,7 @@ export default function AboutUsSection() {
         >
           <div className="flex-1">
             <h3 className="text-2xl font-medium mb-2">Ready to transform your space?</h3>
-            <p className="text-white/80">Let's create something beautiful together.</p>
+            <p className="text-white/80">Let&apos;s create something beautiful together.</p>
           </div>
           <motion.button
             className="bg-[#88734C] hover:bg-[#88734C]/90 text-white px-6 py-3 rounded-lg flex items-center gap-2 font-medium transition-colors"

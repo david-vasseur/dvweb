@@ -21,6 +21,7 @@ import Mockup from './components/sections/Mockup';
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 export default function Home() {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const smootherRef = useRef<any>(null);
 
 	useEffect(() => {

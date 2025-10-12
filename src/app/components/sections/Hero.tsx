@@ -77,7 +77,7 @@ export default function Hero() {
                     ref={titleRef}
                     className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent leading-tight"
                 >
-                    Créateurs d'Expériences
+                    Créateurs d&apos;Expériences
                     <br />
                     Web Modernes
                 </h1>
@@ -105,8 +105,7 @@ export default function Hero() {
                     >
                         <ScrollLink to='#portfolio'>
                             Voir nos réalisations 
-                        </ScrollLink>
-                                                   
+                        </ScrollLink>                                                   
                     </Button>
                 </div>
             </div>

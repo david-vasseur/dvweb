@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import AnimationLaptop from '../3d/AnimationLaptop';
 import gsap from 'gsap';
-import Canvas from '../test/Canvas';
 import { useGSAP } from '@gsap/react';
 import Laptop, { LaptopHandles } from '../3d/Laptop';
 
