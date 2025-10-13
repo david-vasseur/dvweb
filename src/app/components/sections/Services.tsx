@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { Layers, Sparkles, Boxes, Zap } from 'lucide-react';
 import { Card } from '../ui/card';
@@ -10,6 +10,8 @@ import Orb from '../ui/orb-background';
 import Stepper, { Step } from '../ui/step-component';
 import { useDeviceStore } from '@/app/lib/store/useDeviceStore';
 import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
 
 
 
@@ -42,19 +44,21 @@ const services = [
 
 export default function Services() {
 
-    const { isMobile } = useDeviceStore();
     const sectionRef = useRef<HTMLElement>(null);
     const titleRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-    useGSAP(() => {
-        
+    useEffect(() => {
+        console.log("ScrollTrigger count:", ScrollTrigger.getAll().length);
+    }, []);
+
+    useLayoutEffect(() => {
         gsap.from(titleRef.current, {
             scrollTrigger: {
-            trigger: titleRef.current,
-            start: 'top 80%',
-            end: 'bottom 60%',
-            scrub: 1,
+                trigger: titleRef.current,
+                start: 'top 80%',
+                end: 'bottom 60%',
+                scrub: 1,
             },
             y: 100,
             opacity: 0,
@@ -62,36 +66,34 @@ export default function Services() {
 
         cardsRef.current.forEach((card, index) => {
             if (card) {
-            gsap.from(card, {
-                scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                end: 'bottom 80%',
-                scrub: 1,
-                },
-                y: 100,
-                opacity: 0,
-                rotation: index % 2 === 0 ? -5 : 5,
-            });
+                gsap.from(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 85%',
+                        end: 'bottom 80%',
+                        scrub: 1,
+                    },
+                    y: 100,
+                    opacity: 0,
+                    rotation: index % 2 === 0 ? -5 : 5,
+                });
 
-            gsap.to(card, {
-                scrollTrigger: {
-                trigger: card,
-                start: 'top 60%',
-                end: 'bottom 60%',
-                scrub: 1,
-                },
-                scale: 1.05,
-                yoyo: true,
-            });
+                gsap.to(card, {
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 60%',
+                        end: 'bottom 60%',
+                        scrub: 1,
+                    },
+                    scale: 1.05,
+                    yoyo: true,
+                });
             }
         });
-
-        
-    });
+    }, [sectionRef]);
 
     return (
-        <section ref={sectionRef} className="min-h-screen py-32 px-6 relative">
+        <section ref={sectionRef} className="min-h-screen py-32 px-6 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent pointer-events-none" />
 
             <div className="max-w-7xl mx-auto relative z-10">

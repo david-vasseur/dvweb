@@ -76,7 +76,7 @@ export default function Portfolio() {
     }, []);
 
     return (
-        <section id='portfolio' ref={sectionRef} className="min-h-screen py-32 px-6 relative">
+        <section id='portfolio' ref={sectionRef} className="min-h-screen py-32 px-6 relative overflow-x-hidden">
             <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/5 via-transparent to-blue-500/5 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto relative z-10">

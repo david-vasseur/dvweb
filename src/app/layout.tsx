@@ -3,7 +3,6 @@ import type { Metadata } from 'next';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import { Navbar } from './components/ui/navbar';
 import { GradientBlurTop } from './components/ui/gradient-blur';
-import AnimationLaptop from './components/3d/Laptop';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' });
@@ -20,10 +19,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="fr" className="dark">
-			<body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
-				
-				<GradientBlurTop />
+			<body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>	
 				<Navbar className="top-2" />
+				<GradientBlurTop />								
 				{children}
 			</body>
 		</html>

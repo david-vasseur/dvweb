@@ -1,11 +1,17 @@
+"use client"
+
 
 import Hero from './components/sections/Hero';
 import Background3D from './components/3d/Background3D';
 import Services from './components/sections/Services';
+import SmoothScrollWrapper from '@/components/ScrollWrapper';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import gsap from 'gsap';
+import Mockup from './components/sections/Mockup';
 import Portfolio from './components/sections/Portfolio';
 import AboutUsSection from '@/components/about-us-section';
-import Mockup from './components/sections/Mockup';
-import SmoothScrollWrapper from '@/components/ScrollWrapper';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
 
@@ -17,6 +23,6 @@ export default function Home() {
 			<Mockup />
 			<Portfolio />
 			<AboutUsSection />
-		</SmoothScrollWrapper>
+		</SmoothScrollWrapper>	
 	);
 }

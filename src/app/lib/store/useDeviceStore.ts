@@ -7,7 +7,7 @@ interface DeviceState {
 }
 
 export const useDeviceStore = create<DeviceState>((set) => ({
-    isMobile: false,
+    isMobile: false,    
     setIsMobile: (value) => set({ isMobile: value }),
     detectDevice: () => {
         const check = () => {
