@@ -20,7 +20,7 @@ export default function Home() {
 			{/* <Background3D /> */}
 			<Hero />
 			<Services />
-			{/* <Mockup /> */}
+			<Mockup />
 			<Portfolio />
 			<AboutUsSection />
 		</SmoothScrollWrapper>	
