@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useRef } from 'react'
 import AnimationLaptop from '../3d/AnimationLaptop';
 import gsap from 'gsap';
@@ -97,13 +99,13 @@ function Mockup() {
            
             <div className='flex items-center justify-center container'>
                 <div className='h-[100vh] w-2/3'></div>
-                <div className='h-[100vh] w-1/3 flex items-center justify-center text-2xl'>
+                <div className='h-[100vh] w-1/3 flex items-center justify-center text-lg lg:text-2xl'>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque iure cupiditate, vero, itaque perspiciatis non commodi qui beatae harum nobis corrupti impedit doloremque ratione! Hic quas quos dignissimos quasi minus placeat ab similique maxime magnam voluptas! Consequuntur asperiores atque excepturi, accusamus nobis rerum ratione assumenda quibusdam. Vel expedita quis omnis?</p>
                 </div>
             </div>
 
             <div className='flex items-center justify-center'>                
-                <div className='h-[100vh] w-full flex items-center justify-center text-2xl'>
+                <div className='h-[100vh] w-full flex items-center justify-center text-lg lg:text-2xl'>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque iure cupiditate, vero, itaque perspiciatis non commodi qui beatae harum nobis corrupti impedit doloremque ratione! Hic quas quos dignissimos quasi minus placeat ab similique maxime magnam voluptas! Consequuntur asperiores atque excepturi, accusamus nobis rerum ratione assumenda quibusdam. Vel expedita quis omnis?</p>
                 </div>
                 <div className='h-[100vh] w-full'></div>

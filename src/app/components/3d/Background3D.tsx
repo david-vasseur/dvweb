@@ -1,98 +1,15 @@
 'use client';
 
+import { useDeviceStore } from '@/app/lib/store/useDeviceStore';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, useMemo, useEffect, Suspense } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import * as THREE from 'three';
-import { useGLTF, useTexture } from "@react-three/drei";
 
-function FloatingParticles() {
-    // const particlesRef = useRef<THREE.Points>(null);
-    // const count = 200;
-    // const circleTexture = useTexture("/particule.png");
 
-    // const positions = useMemo(() => {
-    //     const pos = new Float32Array(count * 3);
-    //     for (let i = 0; i < count * 3; i += 3) {
-    //         pos[i] = (Math.random() - 0.5) * 50;
-    //         pos[i + 1] = (Math.random() - 0.5) * 30;
-    //         pos[i + 2] = (Math.random() - 0.5) * 15;
-    //     }
-    //     return pos;
-    // }, []);
 
-    // useFrame((state) => {
-    //     if (particlesRef.current) {
-    //         particlesRef.current.rotation.y = state.clock.elapsedTime * 0.05;
-    //         particlesRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
-    //     }
-    // });
+function FloatingParticles({ isMobile}: { isMobile: boolean }) {
 
-//     const positions = useMemo(() => {
-//     const pos = new Float32Array(count * 3);
-//     for (let i = 0; i < count * 3; i += 3) {
-//       pos[i] = (Math.random() - 0.5) * 50;
-//       pos[i + 1] = (Math.random() - 0.5) * 30;
-//       pos[i + 2] = (Math.random() - 0.5) * 15;
-//     }
-//     return pos;
-//   }, []);
-
-//   // phases aléatoires (pour ne pas que tout bouge pareil)
-//   const phases = useMemo(() => {
-//     const arr = new Float32Array(count);
-//     for (let i = 0; i < count; i++) {
-//       arr[i] = Math.random() * Math.PI * 2;
-//     }
-//     return arr;
-//   }, []);
-
-//   useFrame((state) => {
-//     const t = state.clock.elapsedTime;
-//     const points = particlesRef.current;
-//     if (!points) return;
-
-//     // 🌀 animation globale
-//     points.rotation.y = t * 0.05;
-//     points.rotation.x = Math.sin(t * 0.1) * 0.1;
-
-//     // ✨ micro oscillations individuelles
-//     const pos = points.geometry.attributes.position;
-//     const arr = pos.array as Float32Array;
-
-//     for (let i = 0; i < count; i++) {
-//       const i3 = i * 3;
-//       const phase = phases[i];
-
-//       // ajout d’un léger offset pseudo-aléatoire
-//       arr[i3 + 0] += Math.sin(t * 1.2 + phase) * 0.003; // X
-//       arr[i3 + 1] += Math.cos(t * 1.5 + phase) * 0.002; // Y
-//       arr[i3 + 2] += Math.sin(t * 1.8 + phase) * 0.0015; // Z
-//     }
-
-//     pos.needsUpdate = true;
-//   });
-
-//     return (
-//         <points ref={particlesRef}>
-//             <bufferGeometry>
-//                 <bufferAttribute
-//                     attach="attributes-position"
-//                     args={[positions, 3]}
-//                 />
-//             </bufferGeometry>
-//             <pointsMaterial
-//                 map={circleTexture}          
-//                 alphaTest={0.5}   
-//                 size={0.15}
-//                 color="#61dafb"
-//                 transparent
-//                 opacity={0.6}
-//                 sizeAttenuation
-//             />
-//         </points>
-//     );
-
-const count = 20;
+const count = isMobile ? 5 : 20;
 const meshRef = useRef<THREE.InstancedMesh>(null);
 
 useEffect(() => {
@@ -125,7 +42,7 @@ return (
 
 }
 
-function AnimatedTorus() {
+function AnimatedTorus({ isMobile}: { isMobile: boolean }) {
   const torusRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
@@ -138,7 +55,7 @@ function AnimatedTorus() {
 
   return (
     <mesh ref={torusRef} position={[5, 0, -5]}>
-      <torusGeometry args={[2, 0.4, 16, 100]} />
+      <torusGeometry args={isMobile ? [2, 0.4, 10, 50] : [2, 0.4, 16, 100]} />
       <meshStandardMaterial
         color="#149eca"
         wireframe
@@ -150,7 +67,7 @@ function AnimatedTorus() {
 }
 
 
-function AnimatedSphere() {
+function AnimatedSphere({ isMobile}: { isMobile: boolean }) {
   const sphereRef = useRef<THREE.Mesh>(null);
 
   useFrame((state) => {
@@ -162,7 +79,7 @@ function AnimatedSphere() {
 
   return (
     <mesh ref={sphereRef} position={[-5, 0, -3]}>
-      <sphereGeometry args={[1.5, 32, 32]} />
+      <sphereGeometry args={isMobile ? [1, 16, 16] : [1.5, 32, 32]} />
       <meshStandardMaterial
         color="#61dafb"
         wireframe
@@ -174,18 +91,21 @@ function AnimatedSphere() {
 }
 
 export default function Background3D() {
-  return (
-    <div className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none">
-      <Canvas
-        camera={{ position: [0, 0, 20], fov: 75 }}
-        style={{ background: 'transparent' }}
-      >
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} intensity={1} />
-        <FloatingParticles />
-        <AnimatedTorus />
-        <AnimatedSphere />
-      </Canvas>
-    </div>
-  );
+
+	const { isMobile } = useDeviceStore();
+
+    return (
+		<div className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none">
+			<Canvas
+				camera={{ position: [0, 0, 20], fov: 75 }}
+				style={{ background: 'transparent' }}
+			>
+				<ambientLight intensity={0.5} />
+				<pointLight position={[10, 10, 10]} intensity={1} />
+				<FloatingParticles isMobile={isMobile} />
+				<AnimatedTorus isMobile={isMobile} />
+				<AnimatedSphere isMobile={isMobile} />
+			</Canvas>
+		</div>
+    );
 }

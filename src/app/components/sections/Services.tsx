@@ -8,6 +8,10 @@ import DisplayCards from '../ui/display-cards';
 import FeaturedSectionStats from '@/components/featured-section-stats';
 import Orb from '../ui/orb-background';
 import Stepper, { Step } from '../ui/step-component';
+import { useDeviceStore } from '@/app/lib/store/useDeviceStore';
+import { useGSAP } from '@gsap/react';
+
+
 
 const services = [
   {
@@ -37,53 +41,54 @@ const services = [
 ];
 
 export default function Services() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from(titleRef.current, {
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: 'top 80%',
-          end: 'bottom 60%',
-          scrub: 1,
-        },
-        y: 100,
-        opacity: 0,
-      });
+    const { isMobile } = useDeviceStore();
+    const sectionRef = useRef<HTMLElement>(null);
+    const titleRef = useRef<HTMLDivElement>(null);
+    const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-      cardsRef.current.forEach((card, index) => {
-        if (card) {
-          gsap.from(card, {
+    useGSAP(() => {
+        
+        gsap.from(titleRef.current, {
             scrollTrigger: {
-              trigger: card,
-              start: 'top 85%',
-              end: 'bottom 80%',
-              scrub: 1,
+            trigger: titleRef.current,
+            start: 'top 80%',
+            end: 'bottom 60%',
+            scrub: 1,
             },
             y: 100,
             opacity: 0,
-            rotation: index % 2 === 0 ? -5 : 5,
-          });
+        });
 
-          gsap.to(card, {
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 60%',
-              end: 'bottom 60%',
-              scrub: 1,
-            },
-            scale: 1.05,
-            yoyo: true,
-          });
-        }
-      });
-    }, sectionRef);
+        cardsRef.current.forEach((card, index) => {
+            if (card) {
+            gsap.from(card, {
+                scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                end: 'bottom 80%',
+                scrub: 1,
+                },
+                y: 100,
+                opacity: 0,
+                rotation: index % 2 === 0 ? -5 : 5,
+            });
 
-    return () => ctx.revert();
-  }, []);
+            gsap.to(card, {
+                scrollTrigger: {
+                trigger: card,
+                start: 'top 60%',
+                end: 'bottom 60%',
+                scrub: 1,
+                },
+                scale: 1.05,
+                yoyo: true,
+            });
+            }
+        });
+
+        
+    });
 
     return (
         <section ref={sectionRef} className="min-h-screen py-32 px-6 relative">
@@ -112,8 +117,10 @@ export default function Services() {
                         >
                             <Card className="p-8 m-2 aspect-square md:aspect-auto bg-gradient-to-br from-gray-900/50 to-gray-800/30 backdrop-blur-sm border-cyan-500/20 hover:border-cyan-400/40 transition-all duration-500 group h-full">
                             {index === 0 ? (
+                                
                                 <div className="relative h-full flex justify-start items-baseline ">
-                                    <Stepper
+                                   
+                                        <Stepper
                                         initialStep={1}
                                         onStepChange={(step) => {
                                             console.log(step);
@@ -142,6 +149,7 @@ export default function Services() {
                                                 <p>On s’occupe du déploiement, du suivi et de la maintenance pour garantir votre succès.</p>
                                             </Step>
                                         </Stepper>
+                                   
                                     <div className="absolute inset-y-8 right-0 top-0 w-1/2 pointer-events-none">
                                         <h3 className="text-2xl text-right font-bold text-cyan-300 mb-4">
                                             {service.title}
