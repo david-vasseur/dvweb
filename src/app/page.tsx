@@ -25,11 +25,16 @@ export default function Home() {
 	const smootherRef = useRef<any>(null);
 
 	useEffect(() => {
-		smootherRef.current = ScrollSmoother.create({
-			smooth: 1.5,
-			effects: true,
-			smoothTouch: 0.1,
-		});
+		const isMobile = window.matchMedia("(max-width: 768px)").matches;
+		console.log(isMobile);
+		
+		if (!isMobile) {
+			smootherRef.current = ScrollSmoother.create({
+				smooth: 1.5,
+				effects: true,
+				smoothTouch: 0.1,
+			});
+		}
 
 		return () => {
 			smootherRef.current?.kill();
@@ -46,9 +51,6 @@ export default function Home() {
 				<Mockup />
 				<Portfolio />
 				<AboutUsSection />
-				
-				{/* <Team />
-				<Contact /> */}
 			</div>
 		</div>
 	);
