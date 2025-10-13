@@ -17,10 +17,10 @@ export default function Home() {
 
 	return (
 		<SmoothScrollWrapper>
-			<Background3D />				
+			{/* <Background3D /> */}
 			<Hero />
 			<Services />
-			<Mockup />
+			{/* <Mockup /> */}
 			<Portfolio />
 			<AboutUsSection />
 		</SmoothScrollWrapper>	
