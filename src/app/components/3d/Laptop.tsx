@@ -33,32 +33,28 @@ const Laptop = forwardRef<LaptopHandles, LaptopProps>(({ onReady }, ref) => {
 	}, []);
 
 	useEffect(() => {
-		const checkReady = () => {
-			const body = scene.getObjectByName("Body");
-			const screenGroup = body?.getObjectByName("Screen");
+		const body = scene.getObjectByName("Body");
+		const screenGroup = body?.getObjectByName("Screen");
 
-			if (body && screenGroup) {
-				laptopRef.current = scene;
-				screenRef.current = screenGroup;
-				screenGroup.position.set(0, 0, -0.95);
-				screenGroup.rotation.x = degToRad(0);
-				screenGroup.scale.set(1, 1, 1);
+		if (body && screenGroup) {
+			laptopRef.current = body;
+			screenRef.current = screenGroup;
 
-				onReady?.();
-				return true;
+			screenGroup.position.set(0, 0, -0.95);
+			screenGroup.rotation.x = degToRad(0);
+			screenGroup.scale.set(1, 1, 1);
+
+			// Mettre à jour le ref exposé après que screenRef soit assigné
+			if (ref && typeof ref !== "function") {
+			(ref as React.MutableRefObject<LaptopHandles>).current = {
+				laptop: laptopRef.current,
+				screen: screenRef.current,
+			};
 			}
-			return false;
-		};
 
-		if (!checkReady()) {
-			// retry après un petit délai
-			const interval = setInterval(() => {
-				if (checkReady()) clearInterval(interval);
-			}, 50);
-
-			return () => clearInterval(interval);
+			onReady?.();
 		}
-	}, [scene, onReady]);
+	}, [scene, ref, onReady]);
 
 //   useFrame(() => {
 //     const mesh = laptopRef.current;
