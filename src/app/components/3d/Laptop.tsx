@@ -33,19 +33,30 @@ const Laptop = forwardRef<LaptopHandles, LaptopProps>(({ onReady }, ref) => {
 	}, []);
 
 	useEffect(() => {
-		const body = scene.getObjectByName("Body");
-		const screenGroup = body?.getObjectByName("Screen");
+		const checkReady = () => {
+			const body = scene.getObjectByName("Body");
+			const screenGroup = body?.getObjectByName("Screen");
 
-		if (screenGroup) {
-			console.log("🎯 Groupe Screen trouvé :", screenGroup);
-			screenRef.current = screenGroup;
-			screenGroup.position.set(0, 0, -0.95);
-			screenGroup.rotation.x = degToRad(0); // start fermé
-			screenGroup.scale.set(1, 1, 1);
+			if (body && screenGroup) {
+				laptopRef.current = scene;
+				screenRef.current = screenGroup;
+				screenGroup.position.set(0, 0, -0.95);
+				screenGroup.rotation.x = degToRad(0);
+				screenGroup.scale.set(1, 1, 1);
 
-			onReady?.();
-		} else {
-			console.warn("❌ Aucun groupe 'Screen' trouvé dans Body");
+				onReady?.();
+				return true;
+			}
+			return false;
+		};
+
+		if (!checkReady()) {
+			// retry après un petit délai
+			const interval = setInterval(() => {
+			if (checkReady()) clearInterval(interval);
+			}, 50);
+
+			return () => clearInterval(interval);
 		}
 	}, [scene, onReady]);
 
