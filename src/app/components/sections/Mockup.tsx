@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef } from 'react'
+import React, { useLayoutEffect, useRef } from 'react'
 import AnimationLaptop from '../3d/AnimationLaptop';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -36,11 +36,9 @@ function Mockup() {
 
     })
 
-    useEffect(() => {
-        const checkInterval = setInterval(() => {
+    useLayoutEffect(() => {
         if (!laptopRef.current?.laptop || !laptopRef.current?.screen) return;
 
-        // Une fois prêt, on lance l’animation
         const rotationTween = gsap.to(laptopRef.current.laptop.rotation, {
             y: -0.8,
             scrollTrigger: {
@@ -64,7 +62,7 @@ function Mockup() {
         });
 
         const rotationScreen = gsap.to(laptopRef.current.screen.rotation, {
-            x: -1.5,        
+            x: -1.5,
             scrollTrigger: {
                 trigger: sectionRef.current,
                 start: "top top",
@@ -72,8 +70,6 @@ function Mockup() {
                 scrub: 1,
             },
         });
-
-        clearInterval(checkInterval); // stop polling
 
         return () => {
             rotationTween.scrollTrigger?.kill();
@@ -83,9 +79,7 @@ function Mockup() {
             rotationScreen.scrollTrigger?.kill();
             rotationScreen.kill();
         };
-
-        }, 300);
-    }, [laptopRef.current?.laptop, laptopRef.current?.screen]);
+    }, []);
 
     
 
