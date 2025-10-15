@@ -94,8 +94,6 @@ function Mockup() {
             <AnimationLaptop ref={canvasRef}>
                 <Laptop ref={laptopRef} />
             </AnimationLaptop>
-
-            {/* <Canvas ref={canvasRef} /> */}
            
             <div className='flex items-center justify-center container'>
                 <div className='h-[100vh] w-2/3'></div>

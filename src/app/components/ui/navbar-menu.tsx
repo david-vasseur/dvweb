@@ -134,7 +134,7 @@ export const HoveredLink = ({ children, ...rest }: any) => {
 export const MobileMenu = () => {
 
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const NUM_BANDS = 6;
+	const NUM_BANDS = 4;
 	const bands = Array.from({ length: NUM_BANDS });
 
 	return (
@@ -171,7 +171,7 @@ export const MobileMenu = () => {
 			</div>
 			<AnimatePresence mode="wait">
 				{isOpen && (
-          <>			
+          		<>			
 					<motion.div 
 						 key="overlay"
 						className="fixed backdrop-blur-[0.5px] inset-0 z-20 flex"
@@ -196,29 +196,29 @@ export const MobileMenu = () => {
 							/>
 						))}
 					</motion.div>		
-          <motion.ul 
-            className="relative z-30 space-y-6 text-3xl mt-20 font-bold text-cyan-500"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2, delay: 0.5, ease: "easeInOut" }}
-          >
-            {["Acceuil", "Services", "Portfolio", "Contact"].map((item, index) => (
-              <motion.li 
-                key={index}
-                initial={{ opacity: 0, translateY: 100 }}
-                animate={{ opacity: 1, translateY: 0 }}
-                exit={{ opacity: 0, translateY: 100, transition: { duration: 0.2 } }} // sans delay ici
-                transition={{
-                  duration: 0.2,
-                  delay: isOpen ? 0.3 + index * 0.2 : 0, // delay seulement à l'ouverture
-                  ease: "easeInOut",
-                }}
-              >
-                {item}
-              </motion.li>
-            ))}
-          </motion.ul>	
-          </>		
+					<motion.ul 
+						className="relative z-30 space-y-6 text-3xl mt-20 font-bold text-cyan-500"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ duration: 0.2, delay: 0.5, ease: "easeInOut" }}
+					>
+						{["Acceuil", "Services", "Portfolio", "Contact"].map((item, index) => (
+						<motion.li 
+							key={index}
+							initial={{ opacity: 0, translateY: 100 }}
+							animate={{ opacity: 1, translateY: 0 }}
+							exit={{ opacity: 0, translateY: 100, transition: { duration: 0.2 } }} // sans delay ici
+							transition={{
+							duration: 0.2,
+							delay: isOpen ? 0.3 + index * 0.2 : 0, // delay seulement à l'ouverture
+							ease: "easeInOut",
+							}}
+						>
+							{item}
+						</motion.li>
+						))}
+					</motion.ul>	
+				</>		
 				)}
 			</AnimatePresence>
 		</nav>
