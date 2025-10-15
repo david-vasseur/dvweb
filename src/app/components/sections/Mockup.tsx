@@ -22,19 +22,6 @@ function Mockup() {
                 pin: canvasRef.current
             }
         });
-
-        // if (!laptopRef.current?.laptop) return;
-
-        // gsap.to(laptopRef.current.laptop.rotation, {
-        //     x: 10.5,
-        //     scrollTrigger: {
-        //         trigger: sectionRef.current,
-        //         start: "top center",
-        //         end: "center bottom",
-        //         scrub: 1
-        //     }
-        // });
-
     })
 
     useLayoutEffect(() => {
