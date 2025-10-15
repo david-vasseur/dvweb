@@ -53,7 +53,7 @@ const Laptop = forwardRef<LaptopHandles, LaptopProps>(({ onReady }, ref) => {
 		if (!checkReady()) {
 			// retry après un petit délai
 			const interval = setInterval(() => {
-			if (checkReady()) clearInterval(interval);
+				if (checkReady()) clearInterval(interval);
 			}, 50);
 
 			return () => clearInterval(interval);

@@ -25,6 +25,14 @@ function Mockup() {
     })
 
     useLayoutEffect(() => {
+        console.log("ready", ready);
+        console.log("laptopRef", laptopRef.current);
+        console.log("canvasRef", canvasRef.current);
+        console.log("sectionRef", sectionRef.current);        
+    }, [ready]);
+
+
+    useLayoutEffect(() => {
         if (!ready || !laptopRef.current?.laptop || !laptopRef.current.screen) return;
 
         const rotationTween = gsap.to(laptopRef.current.laptop.rotation, {
