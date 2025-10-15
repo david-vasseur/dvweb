@@ -32,11 +32,11 @@ function Mockup() {
     }, [ready]);
 
 
-    useLayoutEffect(() => {
+    useGSAP(() => {
         if (!ready || !laptopRef.current?.laptop || !laptopRef.current.screen) return;
 
         const rotationTween = gsap.to(laptopRef.current.laptop.rotation, {
-            y: -0.8,
+            y: -0.9,
             scrollTrigger: {
                 trigger: sectionRef.current,
                 start: "top top",
@@ -46,7 +46,7 @@ function Mockup() {
         });
 
         const positionTween = gsap.to(laptopRef.current.laptop.position, {
-            x: 1,
+            x: 6,
             z: -2,
             y: -1,
             scrollTrigger: {
@@ -75,7 +75,7 @@ function Mockup() {
             rotationScreen.scrollTrigger?.kill();
             rotationScreen.kill();
         };
-    }, [ready]);
+    }, { dependencies: [ready], scope: sectionRef, revertOnUpdate: true });
 
     
 
