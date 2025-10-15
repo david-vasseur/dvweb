@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useLayoutEffect, useRef } from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
 import AnimationLaptop from '../3d/AnimationLaptop';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -11,6 +11,7 @@ function Mockup() {
     const sectionRef = useRef(null);
     const canvasRef = useRef(null);
     const laptopRef = useRef<LaptopHandles>(null);
+    const [ready, setReady] = useState(false);
 
     useGSAP(() => {
         gsap.to(canvasRef.current, {
@@ -37,7 +38,7 @@ function Mockup() {
     })
 
     useLayoutEffect(() => {
-        if (!laptopRef.current?.laptop || !laptopRef.current?.screen) return;
+        if (!ready || !laptopRef.current?.laptop || !laptopRef.current.screen) return;
 
         const rotationTween = gsap.to(laptopRef.current.laptop.rotation, {
             y: -0.8,
@@ -79,14 +80,14 @@ function Mockup() {
             rotationScreen.scrollTrigger?.kill();
             rotationScreen.kill();
         };
-    }, []);
+    }, [ready]);
 
     
 
     return (
         <section ref={sectionRef} className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-6">
             <AnimationLaptop ref={canvasRef}>
-                <Laptop ref={laptopRef} />
+                <Laptop ref={laptopRef} onReady={() => setReady(true)} />
             </AnimationLaptop>
            
             <div className='flex items-center justify-center container'>

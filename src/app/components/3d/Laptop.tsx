@@ -7,41 +7,47 @@ import { degToRad } from "three/src/math/MathUtils.js";
 
 // 👇 on ajoute un type clair pour ce qu’on expose
 export type LaptopHandles = {
-  laptop: THREE.Object3D | null;
-  screen: THREE.Object3D | null;
+	laptop: THREE.Object3D | null;
+	screen: THREE.Object3D | null;
 };
 
-const Laptop = forwardRef<LaptopHandles>((props, ref) => {
-  const laptopRef = useRef<THREE.Object3D>(null);
-  const screenRef = useRef<THREE.Object3D>(null);
-  const { scene } = useGLTF("/models/Laptop2.glb");
+type LaptopProps = {
+  onReady?: () => void;
+};
 
-  useImperativeHandle(ref, () => ({
-    laptop: laptopRef.current,
-    screen: screenRef.current,
-  }));
+const Laptop = forwardRef<LaptopHandles, LaptopProps>(({ onReady }, ref) => {
+	const laptopRef = useRef<THREE.Object3D>(null);
+	const screenRef = useRef<THREE.Object3D>(null);
+	const { scene } = useGLTF("/models/Laptop2.glb");
 
-  useEffect(() => {
-    if (laptopRef.current) {
-      laptopRef.current.rotation.y = THREE.MathUtils.degToRad(45);
-      laptopRef.current.position.set(-2, -1, -6);
-    }
-  }, []);
+	useImperativeHandle(ref, () => ({
+		laptop: laptopRef.current,
+		screen: screenRef.current,
+	}));
 
-  useEffect(() => {
-    const body = scene.getObjectByName("Body");
-    const screenGroup = body?.getObjectByName("Screen");
+	useEffect(() => {
+		if (laptopRef.current) {
+			laptopRef.current.rotation.y = THREE.MathUtils.degToRad(45);
+			laptopRef.current.position.set(-2, -1, -6);
+		}
+	}, []);
 
-    if (screenGroup) {
-      console.log("🎯 Groupe Screen trouvé :", screenGroup);
-      screenRef.current = screenGroup;
-      screenGroup.position.set(0, 0, -0.95);
-      screenGroup.rotation.x = degToRad(0); // start fermé
-      screenGroup.scale.set(1, 1, 1);
-    } else {
-      console.warn("❌ Aucun groupe 'Screen' trouvé dans Body");
-    }
-  }, [scene]);
+	useEffect(() => {
+		const body = scene.getObjectByName("Body");
+		const screenGroup = body?.getObjectByName("Screen");
+
+		if (screenGroup) {
+			console.log("🎯 Groupe Screen trouvé :", screenGroup);
+			screenRef.current = screenGroup;
+			screenGroup.position.set(0, 0, -0.95);
+			screenGroup.rotation.x = degToRad(0); // start fermé
+			screenGroup.scale.set(1, 1, 1);
+
+			onReady?.();
+		} else {
+			console.warn("❌ Aucun groupe 'Screen' trouvé dans Body");
+		}
+	}, [scene, onReady]);
 
 //   useFrame(() => {
 //     const mesh = laptopRef.current;
@@ -57,8 +63,9 @@ const Laptop = forwardRef<LaptopHandles>((props, ref) => {
 //     screenRef.current.rotation.x = THREE.MathUtils.lerp(screenRef.current.rotation.x, -1.4, 0.004);
 //   });
 
-  return <primitive ref={laptopRef} object={scene} scale={1} />;
+  	return <primitive ref={laptopRef} object={scene} scale={1} />;
 });
-Laptop.displayName = "Laptop"; // (utile pour React DevTools)
+
+Laptop.displayName = "Laptop";
 
 export default Laptop;
