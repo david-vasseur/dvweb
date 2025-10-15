@@ -1,7 +1,9 @@
 "use client";
-import React from "react";
-import { motion } from "motion/react";
-import { LucideIcon } from "lucide-react";
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { LucideIcon, MenuIcon, X } from "lucide-react";
+import { div } from "framer-motion/client";
+import Image from "next/image";
 
 
 
@@ -129,3 +131,96 @@ export const HoveredLink = ({ children, ...rest }: any) => {
         </a>
     );
 };
+export const MobileMenu = () => {
+
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const NUM_BANDS = 6;
+	const bands = Array.from({ length: NUM_BANDS });
+
+	return (
+		<nav className="relative">
+			<div className="relative h-[10vh] flex justify-between items-center z-50">
+				<div>
+					<Image src={"/logo.png"} width={100} height={100} alt="logo" />
+				</div>
+				<div onClick={() => setIsOpen(!isOpen)}>
+					<AnimatePresence mode="wait">
+					{isOpen ? (
+						<motion.div
+							key="close"
+							initial={{ opacity: 0, rotate: -90 }}
+							animate={{ opacity: 1, rotate: 0 }}
+							exit={{ opacity: 0, rotate: 90 }}
+							transition={{ duration: 0.2 }}
+						>
+							<X className={`w-8 h-8 text-cyan-100`} />
+						</motion.div>						
+					) : (
+						<motion.div
+							key="menu"
+							initial={{ opacity: 0, rotate: 90 }}
+							animate={{ opacity: 1, rotate: 0 }}
+							exit={{ opacity: 0, rotate: -90 }}
+							transition={{ duration: 0.2 }}
+						>
+							<MenuIcon className="w-8 h-8 text-cyan-400" />
+						</motion.div>						
+					)}
+					</AnimatePresence>
+				</div>			
+			</div>
+			<AnimatePresence mode="wait">
+				{isOpen && (
+          <>			
+					<motion.div 
+						 key="overlay"
+						className="fixed backdrop-blur-[0.5px] inset-0 z-20 flex"
+						initial="initial"
+						animate="animate"
+						exit="exit"
+					>
+						{bands.map((_, i) => (
+							<motion.div
+								key={i}
+								className="flex-1 bg-black"
+								variants={{
+									initial: { translateX: "600%" },
+									animate: { translateX: 0 },
+									exit: { translateX: "600%" },
+								}}
+								transition={{
+									duration: 0.6,
+									ease: "easeInOut",
+									delay: i * 0.05, 
+								}}
+							/>
+						))}
+					</motion.div>		
+          <motion.ul 
+            className="relative z-30 space-y-6 text-3xl mt-20 font-bold text-cyan-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, delay: 0.5, ease: "easeInOut" }}
+          >
+            {["Acceuil", "Services", "Portfolio", "Contact"].map((item, index) => (
+              <motion.li 
+                key={index}
+                initial={{ opacity: 0, translateY: 100 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                exit={{ opacity: 0, translateY: 100, transition: { duration: 0.2 } }} // sans delay ici
+                transition={{
+                  duration: 0.2,
+                  delay: isOpen ? 0.3 + index * 0.2 : 0, // delay seulement à l'ouverture
+                  ease: "easeInOut",
+                }}
+              >
+                {item}
+              </motion.li>
+            ))}
+          </motion.ul>	
+          </>		
+				)}
+			</AnimatePresence>
+		</nav>
+	)
+}
