@@ -5,6 +5,7 @@ import AnimationLaptop from '../3d/AnimationLaptop';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import Laptop, { LaptopHandles } from '../3d/Laptop';
+import { degToRad } from 'three/src/math/MathUtils.js';
 
 function Mockup() {
 
@@ -35,46 +36,54 @@ function Mockup() {
     useGSAP(() => {
         if (!ready || !laptopRef.current?.laptop || !laptopRef.current.screen) return;
 
-        const rotationTween = gsap.to(laptopRef.current.laptop.rotation, {
-            y: -0.9,
+        const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: sectionRef.current,
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1,
+                start: "top bottom",      
+                end: "bottom bottom", 
+                scrub: 2,           
             },
+            defaults: { ease: "none" }
         });
 
-        const positionTween = gsap.to(laptopRef.current.laptop.position, {
-            x: 6,
-            z: -2,
-            y: -1,
-            scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "30% top",
-                end: "70% bottom",
-                scrub: 1,
-            },
-        });
+        tl.to(laptopRef.current.screen.rotation, { x: degToRad(-89), duration: 1 });
+        tl.to(laptopRef.current.laptop.rotation, { y: degToRad(5), duration: 0.5 }, "<");
+        tl.to(laptopRef.current.laptop.position, { x: -1.2, duration: 0.5 }, "<"); // "<" => en parallèle
 
-        const rotationScreen = gsap.to(laptopRef.current.screen.rotation, {
-            x: -1.5,
-            scrollTrigger: {
-                trigger: sectionRef.current,
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1,
-            },
-        });
+        // Phase 2
+        tl.to(laptopRef.current.laptop.rotation, { y: degToRad(-70), duration: 1 });
+        tl.to(laptopRef.current.laptop.position, { x: 3, y: 1 , duration: 1 }, "<");
 
-        return () => {
-            rotationTween.scrollTrigger?.kill();
-            rotationTween.kill();
-            positionTween.scrollTrigger?.kill();
-            positionTween.kill();
-            rotationScreen.scrollTrigger?.kill();
-            rotationScreen.kill();
-        };
+        // Phase 3
+        tl.to(laptopRef.current.laptop.rotation, { y: degToRad(5), duration: 1 });
+        tl.to(laptopRef.current.laptop.position, { x: -1, y: -0.5, duration: 1 }, "<");
+
+        // const positionTween = gsap.to(laptopRef.current.laptop.position, {
+        //     x: 6,
+        //     z: 2,
+        //     y: -1,
+        //     scrollTrigger: {
+        //         trigger: sectionRef.current,
+        //         start: "30% top",
+        //         end: "70% bottom",
+        //         scrub: 1,
+        //         markers: {
+        //             startColor: "blue",
+        //             endColor: "green"
+        //         }
+        //     },
+        // });
+
+        // const rotationScreen = gsap.to(laptopRef.current.screen.rotation, {
+        //     x: -1.5,
+        //     scrollTrigger: {
+        //         trigger: sectionRef.current,
+        //         start: "top top",
+        //         end: "bottom bottom",
+        //         scrub: 1,
+        //     },
+        // });
+
     }, { dependencies: [ready], scope: sectionRef, revertOnUpdate: true });
 
     
@@ -87,16 +96,26 @@ function Mockup() {
            
             <div className='flex items-center justify-center container'>
                 <div className='h-[100vh] w-2/3'></div>
-                <div className='h-[100vh] w-1/3 flex items-center justify-center text-lg lg:text-2xl'>
+                <div className='h-[100vh] w-1/3 flex flex-col gap-8 items-center justify-center text-lg lg:text-2xl'>
+                    <h3 className='font-bold uppercase text-4xl text-cyan-500'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, reiciendis.</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque iure cupiditate, vero, itaque perspiciatis non commodi qui beatae harum nobis corrupti impedit doloremque ratione! Hic quas quos dignissimos quasi minus placeat ab similique maxime magnam voluptas! Consequuntur asperiores atque excepturi, accusamus nobis rerum ratione assumenda quibusdam. Vel expedita quis omnis?</p>
                 </div>
             </div>
 
-            <div className='flex items-center justify-center'>                
-                <div className='h-[100vh] w-full flex items-center justify-center text-lg lg:text-2xl'>
+            <div className='flex items-center justify-center container'>                
+                <div className='h-[100vh] w-1/3 flex flex-col gap-8 items-center justify-center text-lg lg:text-2xl text-right'>
+                    <h3 className='font-bold uppercase text-4xl text-cyan-500'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, reiciendis.</h3>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque iure cupiditate, vero, itaque perspiciatis non commodi qui beatae harum nobis corrupti impedit doloremque ratione! Hic quas quos dignissimos quasi minus placeat ab similique maxime magnam voluptas! Consequuntur asperiores atque excepturi, accusamus nobis rerum ratione assumenda quibusdam. Vel expedita quis omnis?</p>
                 </div>
-                <div className='h-[100vh] w-full'></div>
+                <div className='h-[100vh] w-2/3'></div>
+            </div>
+
+            <div className='flex items-center justify-center container'>
+                <div className='h-[100vh] w-2/3'></div>
+                <div className='h-[100vh] w-1/3 flex flex-col gap-8 items-center justify-center text-lg lg:text-2xl'>
+                    <h3 className='font-bold uppercase text-4xl text-cyan-500'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, reiciendis.</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque iure cupiditate, vero, itaque perspiciatis non commodi qui beatae harum nobis corrupti impedit doloremque ratione! Hic quas quos dignissimos quasi minus placeat ab similique maxime magnam voluptas! Consequuntur asperiores atque excepturi, accusamus nobis rerum ratione assumenda quibusdam. Vel expedita quis omnis?</p>
+                </div>
             </div>
             
         </section>

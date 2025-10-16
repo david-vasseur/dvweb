@@ -27,8 +27,8 @@ const Laptop = forwardRef<LaptopHandles, LaptopProps>(({ onReady }, ref) => {
 
 	useEffect(() => {
 		if (laptopRef.current) {
-			laptopRef.current.rotation.y = THREE.MathUtils.degToRad(45);
-			laptopRef.current.position.set(-2, -1, -6);
+			laptopRef.current.rotation.y = THREE.MathUtils.degToRad(40);
+			laptopRef.current.position.set(-1, -1, -5);
 		}
 	}, []);
 
@@ -41,7 +41,7 @@ const Laptop = forwardRef<LaptopHandles, LaptopProps>(({ onReady }, ref) => {
 			screenRef.current = screenGroup;
 
 			screenGroup.position.set(0, 0, -0.95);
-			screenGroup.rotation.x = degToRad(0);
+			screenGroup.rotation.x = degToRad(-10);
 			screenGroup.scale.set(1, 1, 1);
 
 			// Mettre à jour le ref exposé après que screenRef soit assigné
