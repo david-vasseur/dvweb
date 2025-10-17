@@ -1,45 +1,62 @@
 'use client';
 
 import { useDeviceStore } from '@/app/lib/store/useDeviceStore';
+import { Environment } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useRef, useMemo, useEffect } from 'react';
 import * as THREE from 'three';
 
 
 
-function FloatingParticles({ isMobile}: { isMobile: boolean }) {
+function FloatingParticles({ isMobile }: { isMobile: boolean }) {
+  const count = isMobile ? 10 : 50;
 
-const count = isMobile ? 10 : 80;
-const meshRef = useRef<THREE.InstancedMesh>(null);
+  // on stocke les références de chaque mesh pour les animer ensuite
+  const meshRefs = useRef<THREE.Mesh[]>([]);
 
-useEffect(() => {
-    const dummy = new THREE.Object3D();
+  // positions de départ aléatoires
+  const positions = useMemo(() => {
+    const arr: [number, number, number][] = [];
     for (let i = 0; i < count; i++) {
-        dummy.position.set(
-            (Math.random() - 0.5) * 30,
-            (Math.random() - 0.5) * 30,
-            (Math.random() - 0.5) * 15
-        );
-        dummy.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
-        dummy.updateMatrix();
-        dummy.scale.set(1, 1, 1);
-        meshRef.current!.setMatrixAt(i, dummy.matrix);
-}
-    meshRef.current!.instanceMatrix.needsUpdate = true;
-}, []);
+      arr.push([
+        (Math.random() - 0.5) * 30, // x
+        (Math.random() - 0.5) * 30, // y
+        (Math.random() - 0.5) * 15, // z
+      ]);
+    }
+    return arr;
+  }, [count]);
 
-useFrame((state) => {
-  meshRef.current!.rotation.y = state.clock.elapsedTime * 0.05;
-  meshRef.current!.rotation.x = Math.sin(state.clock.elapsedTime * 0.1) * 0.1;
-});
+  // animation frame-by-frame
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
 
-return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
-        <sphereGeometry args={[0.1, 16, 16]} />
-        <meshStandardMaterial color="#61dafb" roughness={0.4} metalness={0.8} transparent />
-    </instancedMesh>
-);
+    meshRefs.current.forEach((mesh, i) => {
+      if (!mesh) return;
 
+      // petit mouvement de flottement unique pour chaque sphère
+      mesh.position.y += Math.sin(t * 0.6 + i) * 0.01;
+      mesh.position.x += Math.cos(t * 0.3 + i) * 0.005;
+      mesh.rotation.y += 0.01; // légère rotation
+    });
+  });
+
+  return (
+    <>
+      {positions.map((pos, i) => (
+        <mesh
+          key={i}
+          ref={(el) => {
+            if (el) meshRefs.current[i] = el;
+          }}
+          position={pos}
+        >
+          <sphereGeometry args={[0.1, 16, 16]} />
+          <meshStandardMaterial color="#61dafb" roughness={0.9} metalness={0.9} />
+        </mesh>
+      ))}
+    </>
+  );
 }
 
 function AnimatedTorus({ isMobile}: { isMobile: boolean }) {
@@ -99,7 +116,8 @@ export default function Background3D() {
 				camera={{ position: [0, 0, 20], fov: 75 }}
 				style={{ background: 'transparent' }}
 			>
-				<ambientLight intensity={0.5} />
+        <Environment preset="city" />
+				<ambientLight intensity={2.5} />
 				<pointLight position={[10, 10, 10]} intensity={1} />
 				<FloatingParticles isMobile={isMobile} />
 				{/* <AnimatedTorus isMobile={isMobile} />

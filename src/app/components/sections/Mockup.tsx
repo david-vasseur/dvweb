@@ -86,7 +86,7 @@ function Mockup() {
     
 
     return (
-        <section ref={sectionRef} className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-6">
+        <section ref={sectionRef} className="my-10 lg:my-0 min-h-screen flex flex-col lg:gap-0 gap-14 items-center justify-center relative overflow-hidden px-6">
             <AnimationLaptop ref={canvasRef}>
                 <Laptop ref={laptopRef} onReady={() => setReady(true)} />
             </AnimationLaptop>
@@ -94,12 +94,12 @@ function Mockup() {
             {projetsConfiance.map((projet) => {
                 return (
                     <div key={projet.id} className='flex items-center justify-center container'>
-                        {projet.id !== 1 && <div className='h-[100vh] w-2/3'></div>}
-                        <div className={`h-[80vh] w-1/3 flex flex-col gap-8 items-center justify-center text-lg lg:text-2xl ${projet.id === 1 ? "text-right" : ""}`}>
-                            <h3 className='font-bold uppercase text-4xl text-cyan-500'>{projet.titre}</h3>
+                        {projet.id !== 1 && <div className='lg:h-[100vh] lg:w-2/3'></div>}
+                        <div className={`lg:h-[80vh] lg:w-1/3 flex flex-col gap-8 items-center justify-center text-lg lg:text-2xl ${projet.id === 1 ? "text-right" : ""}`}>
+                            <h3 className='uppercase text-4xl text-cyan-500 font-black'>{projet.titre}</h3>
                             <p>{projet.paragraphe}</p>
                         </div>
-                        {projet.id === 1 && <div className='h-[100vh] w-2/3'></div>}
+                        {projet.id === 1 && <div className='lg:h-[100vh] lg:w-2/3'></div>}
                     </div>
                 )
             })}
