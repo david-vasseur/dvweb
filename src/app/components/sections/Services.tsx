@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { Layers, Sparkles, Boxes, Zap } from 'lucide-react';
 import { Card } from '../ui/card';
@@ -8,11 +8,8 @@ import DisplayCards from '../ui/display-cards';
 import FeaturedSectionStats from '@/components/featured-section-stats';
 import Orb from '../ui/orb-background';
 import Stepper, { Step } from '../ui/step-component';
-import { useDeviceStore } from '@/app/lib/store/useDeviceStore';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-
 
 
 const services = [
@@ -48,11 +45,7 @@ export default function Services() {
     const titleRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-    useEffect(() => {
-        console.log("ScrollTrigger count:", ScrollTrigger.getAll().length);
-    }, []);
-
-    useLayoutEffect(() => {
+    useGSAP(() => {
         gsap.from(titleRef.current, {
             scrollTrigger: {
                 trigger: titleRef.current,
@@ -65,32 +58,58 @@ export default function Services() {
         });
 
         cardsRef.current.forEach((card, index) => {
+            // if (card) {
+            //     gsap.from(card, {
+            //         scrollTrigger: {
+            //             trigger: card,
+            //             start: 'top 85%',
+            //             end: 'bottom 80%',
+            //             scrub: 1,
+            //         },
+            //         y: 100,
+            //         opacity: 0,
+            //         rotation: index % 2 === 0 ? -5 : 5,
+            //     });
+
+            //     gsap.to(card, {
+            //         scrollTrigger: {
+            //             trigger: card,
+            //             start: 'top 60%',
+            //             end: 'bottom 60%',
+            //             scrub: 1,
+            //         },
+            //         scale: 1.05,
+            //         yoyo: true,
+            //     });
+            // }
             if (card) {
-                gsap.from(card, {
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 85%',
-                        end: 'bottom 80%',
-                        scrub: 1,
-                    },
+                gsap.fromTo(
+                    card,
+                    {
                     y: 100,
                     opacity: 0,
                     rotation: index % 2 === 0 ? -5 : 5,
-                });
-
-                gsap.to(card, {
+                    scale: 0.9,
+                    },
+                    {
                     scrollTrigger: {
                         trigger: card,
-                        start: 'top 60%',
-                        end: 'bottom 60%',
+                        start: 'top 85%',
+                        end: 'top 60%',
                         scrub: 1,
                     },
-                    scale: 1.05,
-                    yoyo: true,
-                });
+                    y: 0,
+                    opacity: 1,
+                    rotation: 0,
+                    scale: 1,
+                    ease: 'none',
+                    }
+                );
             }
+
         });
-    }, [sectionRef]);
+
+    }, { scope: sectionRef });
 
     return (
         <section ref={sectionRef} className="min-h-screen py-32 px-6 relative overflow-hidden">

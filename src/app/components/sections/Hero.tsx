@@ -7,6 +7,8 @@ import { Button } from '../ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import ScrollLink from '../ui/scroll-link';
+import BackgroundPaths from '@/components/ui/background-paths';
+import Background3D from '../3d/Background3D';
 
 export default function Hero() {
     const heroRef = useRef<HTMLElement>(null);
@@ -63,6 +65,7 @@ export default function Hero() {
             ref={heroRef}
             className="min-h-screen flex items-center justify-center relative overflow-hidden px-6"
         >
+            
             <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-blue-500/5 to-transparent pointer-events-none" />
 
             <div className="max-w-6xl mx-auto text-center relative z-10">
@@ -77,7 +80,7 @@ export default function Hero() {
                     ref={titleRef}
                     className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-300 bg-clip-text text-transparent leading-tight"
                 >
-                    Créateurs d&apos;Expériences
+                    Expériences
                     <br />
                     Web Modernes
                 </h1>

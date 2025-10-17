@@ -9,7 +9,7 @@ import * as THREE from 'three';
 
 function FloatingParticles({ isMobile}: { isMobile: boolean }) {
 
-const count = isMobile ? 5 : 20;
+const count = isMobile ? 10 : 80;
 const meshRef = useRef<THREE.InstancedMesh>(null);
 
 useEffect(() => {
@@ -36,7 +36,7 @@ useFrame((state) => {
 return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, count]}>
         <sphereGeometry args={[0.1, 16, 16]} />
-        <meshStandardMaterial color="#61dafb" roughness={0.4} metalness={0.8} transparent wireframe />
+        <meshStandardMaterial color="#61dafb" roughness={0.4} metalness={0.8} transparent />
     </instancedMesh>
 );
 
@@ -82,7 +82,6 @@ function AnimatedSphere({ isMobile}: { isMobile: boolean }) {
       <sphereGeometry args={isMobile ? [1, 16, 16] : [1.5, 32, 32]} />
       <meshStandardMaterial
         color="#61dafb"
-        wireframe
         transparent
         opacity={0.2}
       />
@@ -103,8 +102,8 @@ export default function Background3D() {
 				<ambientLight intensity={0.5} />
 				<pointLight position={[10, 10, 10]} intensity={1} />
 				<FloatingParticles isMobile={isMobile} />
-				<AnimatedTorus isMobile={isMobile} />
-				<AnimatedSphere isMobile={isMobile} />
+				{/* <AnimatedTorus isMobile={isMobile} />
+				<AnimatedSphere isMobile={isMobile} /> */}
 			</Canvas>
 		</div>
     );
